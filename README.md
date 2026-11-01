@@ -12,51 +12,7 @@ The React/Vite UI reads the product catalog through a Node/Express API. Chat req
 
 For <code>DROP TABLE</code> or <code>ALTER TABLE</code>, the hook blocks attempts through MCP's <code>execute_sql</code> tool and tells the agent to use the custom <code>run_admin_sql</code> tool. Agno pauses that confirmation-required tool call. Middleware creates a Jira issue and stores the run-to-issue mapping; after a reviewer changes the Jira status, the UI checks it and either resumes or cancels the run.
 
-~~~mermaid
-sequenceDiagram
-    actor User
-    participant UI as React chat UI
-    participant Agent as Agno AgentOS / DBA agent
-    participant Guard as DDL tool hook
-    participant MCP as postgres-mcp
-    participant Gate as run_admin_sql (confirmation required)
-    participant HITL as JiraHitlMiddleware
-    participant Jira
-    participant API as Approval API
-    participant DB as PostgreSQL
-
-    User->>UI: Request a schema change
-    UI->>Agent: POST /agents/postgres_agent/runs
-    Agent->>Guard: execute_sql(DROP TABLE / ALTER TABLE)
-    Guard-->>Agent: Block raw MCP call; direct to run_admin_sql
-    Agent->>Gate: run_admin_sql(sql)
-    Gate-->>Agent: Pause run; return PAUSED requirement
-    Agent-->>HITL: PAUSED run response
-    HITL->>Jira: Create approval issue with tool/run details
-    HITL->>DB: Store run-to-issue mapping
-    HITL-->>UI: Return paused response and run ID
-
-    User->>Jira: Review request; transition issue status
-    User->>UI: Check approval status
-    UI->>API: GET /api/approvals/{run_id}
-    API->>Jira: Read issue status
-    Jira-->>API: Mapped status
-
-    alt Approved
-        User->>UI: Confirm on the next click
-        UI->>API: POST /api/approvals/{run_id}/continue
-        API->>Agent: Resume with confirmed=true
-        Agent->>DB: Execute run_admin_sql
-        DB-->>Agent: Execution result
-        Agent-->>API: Final agent response
-        API-->>UI: Completed result
-    else Rejected / blocked
-        UI->>API: POST /api/approvals/{run_id}/reject
-        API->>Agent: Cancel paused run
-        Note over Agent,DB: Protected SQL is not executed
-        API-->>UI: Rejected result
-    end
-~~~
+![Approval workflow sequence diagram](docs/approval-workflow.svg)
 
 ## Key capabilities
 
