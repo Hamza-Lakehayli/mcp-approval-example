@@ -12,7 +12,7 @@ The React/Vite UI reads the product catalog through a Node/Express API. Chat req
 
 For <code>DROP TABLE</code> or <code>ALTER TABLE</code>, the hook blocks attempts through MCP's <code>execute_sql</code> tool and tells the agent to use the custom <code>run_admin_sql</code> tool. Agno pauses that confirmation-required tool call. Middleware creates a Jira issue and stores the run-to-issue mapping; after a reviewer changes the Jira status, the UI checks it and either resumes or cancels the run.
 
-![Approval workflow sequence diagram](docs/approval-workflow.svg)
+![Simple approval workflow](docs/approval-workflow.svg)
 
 ## Key capabilities
 
