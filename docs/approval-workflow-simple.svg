@@ -26,7 +26,7 @@
   <rect class="box" x="38" y="208" width="284" height="48" rx="6" fill="#f3f4f6"/>
   <text class="head" x="180" y="227" text-anchor="middle">Human reviewer</text>
   <text class="sub" x="180" y="243" text-anchor="middle">Approves or rejects the Jira request</text>
-  <path d="M180 256V273H105V293M180 273H255V293" fill="none" stroke="#737373" stroke-width="1.4" marker-end="url(#arrow)"/>
+  <path d="M180 256V273H105V293" fill="none" stroke="#737373" stroke-width="1.4" marker-end="url(#arrow)"/><path d="M180 273H255V293" fill="none" stroke="#737373" stroke-width="1.4" marker-end="url(#arrow)"/>
   <rect x="30" y="298" width="150" height="66" rx="6" fill="#eaf6ed" stroke="#4d9560" stroke-opacity=".65"/>
   <text x="105" y="320" text-anchor="middle" class="head" fill="#246b39">Approved</text>
   <text x="105" y="338" text-anchor="middle" class="sub">Resume run and execute SQL</text>
