@@ -1,12 +1,43 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1320" height="1010" viewBox="0 0 1320 1010" role="img" aria-labelledby="title desc">
-<title id="title">Inventory Console human approval workflow</title><desc id="desc">A sequence overview of protected SQL requests through the UI, Agno AgentOS, the tool hook, Jira approval, and PostgreSQL, with approved and rejected outcomes.</desc>
-<defs><marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#64748b"/></marker><marker id="g" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#15803d"/></marker><marker id="r" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#b91c1c"/></marker><style>text{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#172033}.title{font-size:23px;font-weight:700}.sub{font-size:13px;fill:#475569}.head{font-size:12px;font-weight:650}.msg{font-size:11.5px;fill:#334155}.note{font-size:11px;fill:#475569}.lane{stroke:#cbd5e1;stroke-width:1;stroke-dasharray:4 5}.line{stroke:#64748b;stroke-width:1.5;fill:none;marker-end:url(#a)}.green{stroke:#15803d;stroke-width:1.6;fill:none;marker-end:url(#g)}.red{stroke:#b91c1c;stroke-width:1.6;fill:none;marker-end:url(#r)}</style></defs>
-<rect width="1320" height="1010" fill="#fff"/><text x="32" y="36" class="title">Human approval for protected SQL</text><text x="32" y="59" class="sub">A reviewer changes the Jira issue; the UI then resumes the paused run or cancels it.</text>
-<g><rect x="22" y="78" width="126" height="46" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/><text x="85" y="106" text-anchor="middle" class="head">User / reviewer</text><rect x="182" y="78" width="126" height="46" rx="8" fill="#eff6ff" stroke="#bfdbfe"/><text x="245" y="106" text-anchor="middle" class="head">React UI</text><rect x="342" y="78" width="126" height="46" rx="8" fill="#eff6ff" stroke="#bfdbfe"/><text x="405" y="98" text-anchor="middle" class="head">Agno AgentOS</text><text x="405" y="114" text-anchor="middle" class="head">+ approval API</text><rect x="502" y="78" width="126" height="46" rx="8" fill="#fff7ed" stroke="#fed7aa"/><text x="565" y="98" text-anchor="middle" class="head">Tool hook +</text><text x="565" y="114" text-anchor="middle" class="head">Postgres MCP</text><rect x="662" y="78" width="126" height="46" rx="8" fill="#fff7ed" stroke="#fed7aa"/><text x="725" y="98" text-anchor="middle" class="head">run_admin_sql</text><text x="725" y="114" text-anchor="middle" class="head">confirmation gate</text><rect x="822" y="78" width="126" height="46" rx="8" fill="#f5f3ff" stroke="#ddd6fe"/><text x="885" y="98" text-anchor="middle" class="head">Jira HITL</text><text x="885" y="114" text-anchor="middle" class="head">middleware</text><rect x="982" y="78" width="126" height="46" rx="8" fill="#f5f3ff" stroke="#ddd6fe"/><text x="1045" y="106" text-anchor="middle" class="head">Jira</text><rect x="1142" y="78" width="126" height="46" rx="8" fill="#f0fdf4" stroke="#bbf7d0"/><text x="1205" y="106" text-anchor="middle" class="head">PostgreSQL</text></g>
-<g class="lane"><path d="M85 124V650M245 124V650M405 124V650M565 124V650M725 124V650M885 124V650M1045 124V650M1205 124V650"/></g>
-<g class="line"><path d="M85 153H245M245 192H405M405 231H565M565 270H405M405 309H725M725 348H405M405 387H885M885 426H1045M885 465H1205M885 504H245M85 543H1045M245 582H405M405 621H1045"/></g>
-<g class="msg" text-anchor="middle"><text x="165" y="147">Ask for DROP / ALTER</text><text x="325" y="186">POST /agents/.../runs</text><text x="485" y="225">execute_sql(sql)</text><text x="485" y="264">Block; agent uses gated tool</text><text x="565" y="303">run_admin_sql(sql)</text><text x="565" y="342">PAUSED before execution</text><text x="645" y="381">PAUSED requirement</text><text x="965" y="420">Create issue with tool/run details</text><text x="965" y="459">Store run-to-issue mapping</text><text x="565" y="498">Return PAUSED + run ID</text><text x="565" y="537">Reviewer changes Jira status</text><text x="325" y="576">GET approval status</text><text x="725" y="615">Fetch and map Jira status</text></g>
-<text x="32" y="665" class="note">The hook blocks only DROP TABLE / ALTER TABLE sent through execute_sql. The gated tool runs direct SQL after confirmation.</text>
-<rect x="32" y="686" width="610" height="286" rx="12" fill="#f0fdf4" stroke="#86efac"/><rect x="662" y="686" width="626" height="286" rx="12" fill="#fef2f2" stroke="#fca5a5"/><text x="56" y="718" font-size="16" font-weight="700" fill="#166534">APPROVED</text><text x="686" y="718" font-size="16" font-weight="700" fill="#991b1b">REJECTED / BLOCKED</text>
-<g class="green"><path d="M110 762H553M553 806H110M110 850H553M553 894H110M110 938H553"/></g><g class="msg" text-anchor="middle"><text x="331" y="756">UI → POST /continue (after status check)</text><text x="331" y="800">API resumes Agno with confirmed=true</text><text x="331" y="844">run_admin_sql executes SQL in PostgreSQL</text><text x="331" y="888">PostgreSQL returns execution result</text><text x="331" y="932">Agent response returns to the UI</text></g>
-<g class="red"><path d="M742 762H1190M1190 806H742M742 850H1190M1190 894H742"/></g><g class="msg" text-anchor="middle"><text x="966" y="756">UI → POST /reject when status is blocked</text><text x="966" y="800">API cancels the paused AgentOS run</text><text x="966" y="844">No confirmed tool call; protected SQL does not run</text><text x="966" y="888">UI receives a rejected result</text></g><text x="32" y="995" class="note">A reviewer changes Jira status; the application does not make the approval decision.</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="378" viewBox="0 0 360 378" role="img" aria-labelledby="title desc">
+  <title id="title">MCP approval workflow</title>
+  <desc id="desc">A protected SQL request passes through an agent approval gate and Jira human review, then is either executed or cancelled.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0L7 3.5L0 7Z" fill="#737373"/></marker>
+    <style>
+      text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#25313d}
+      .head{font-size:12px;font-weight:600}.sub{font-size:9.5px;fill:#52606d}
+      .box{stroke:#737373;stroke-opacity:.4;stroke-width:1}
+      .arrow{fill:none;stroke:#737373;stroke-width:1.4;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect width="360" height="378" fill="#fff"/>
+  <rect class="box" x="38" y="10" width="284" height="48" rx="6" fill="#f3f4f6"/>
+  <text class="head" x="180" y="29" text-anchor="middle">AI Agent + Postgres MCP</text>
+  <text class="sub" x="180" y="45" text-anchor="middle">Requests a protected SQL tool call</text>
+  <path class="arrow" d="M180 58V72"/>
+
+  <rect class="box" x="38" y="76" width="284" height="48" rx="6" fill="#e8f1f6" stroke="#245b79"/>
+  <text class="head" x="180" y="95" text-anchor="middle">Approval gate</text>
+  <text class="sub" x="180" y="111" text-anchor="middle">Raw DROP / ALTER blocked; gated tool pauses</text>
+  <path class="arrow" d="M180 124V138"/>
+
+  <rect class="box" x="38" y="142" width="284" height="48" rx="6" fill="#f3f4f6"/>
+  <text class="head" x="180" y="161" text-anchor="middle">Jira approval request</text>
+  <text class="sub" x="180" y="177" text-anchor="middle">Middleware records the paused run for review</text>
+  <path class="arrow" d="M180 190V204"/>
+
+  <rect class="box" x="38" y="208" width="284" height="48" rx="6" fill="#f3f4f6"/>
+  <text class="head" x="180" y="227" text-anchor="middle">Human reviewer</text>
+  <text class="sub" x="180" y="243" text-anchor="middle">Approves or rejects the Jira request</text>
+
+  <path d="M180 256V273H105V293M180 273H255V293" fill="none" stroke="#737373" stroke-width="1.4" marker-end="url(#arrow)"/>
+  <rect x="30" y="298" width="150" height="66" rx="6" fill="#eaf6ed" stroke="#4d9560" stroke-opacity=".65"/>
+  <text x="105" y="320" text-anchor="middle" class="head" fill="#246b39">Approved</text>
+  <text x="105" y="338" text-anchor="middle" class="sub">Resume run and execute SQL</text>
+  <text x="105" y="352" text-anchor="middle" class="sub">in PostgreSQL</text>
+
+  <rect x="180" y="298" width="150" height="66" rx="6" fill="#fbefef" stroke="#b65a5a" stroke-opacity=".65"/>
+  <text x="255" y="320" text-anchor="middle" class="head" fill="#8d3030">Rejected</text>
+  <text x="255" y="338" text-anchor="middle" class="sub">Cancel paused run;</text>
+  <text x="255" y="352" text-anchor="middle" class="sub">SQL is not executed</text>
+</svg>
